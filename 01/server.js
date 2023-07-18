@@ -7,7 +7,9 @@ const app = express();
 //middleware
 app.use(express.json());
 
-//routes
+//ROUTES
+
+//POST
 app.post("/author", async (req, res) => {
   const { name, age } = req.body;
 
@@ -27,11 +29,11 @@ app.post("/author", async (req, res) => {
 
     await pool.query(queryInsertAuthor, paramsAuthor);
 
-    const querySelectAuthors = `
+    const queryAuthors = `
       SELECT * FROM authors;
     `;
 
-    const authors = await pool.query(querySelectAuthors);
+    const authors = await pool.query(queryAuthors);
 
     return res.json(authors.rows);
   } catch (error) {
@@ -39,7 +41,29 @@ app.post("/author", async (req, res) => {
   }
 });
 
-//server
+//GET
+app.get("/author/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log(id);
+  try {
+    const querySelectedAuthor = `
+    SELECT * FROM authors
+    WHERE id = $1;
+  `;
+    const selectedAuthor = (await pool.query(querySelectedAuthor, [id])).rows;
+
+    if (selectedAuthor.length === 0) {
+      return res.status(404).json({
+        message: "Author not found.",
+      });
+    }
+    return res.json(selectedAuthor);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+//SERVER
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
