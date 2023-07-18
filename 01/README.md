@@ -1,210 +1,203 @@
 ![](https://i.imgur.com/xG74tOh.png)
 
-# Exercício 01
+# Challenge 01
 
-## Implementação de Api para sistemas de Biblioteca
+## API implementation for Library systems
 
-Parabéns... Você foi selecionado para trabalhar em um projeto de uma Api para um sistema de bibliotecas. Seguindo todos os requisitos abaixo, faça as devidas implementações da Api.
+Congratulations... You have been selected to work on an API project for a library system. Following all the requirements below, make the appropriate implementations of the API.
 
-Obs.: Será um grande diferencial manter o código legível e bem organizado.
+_It is necessary to carry out all the necessary validations to avoid errors in the database_
 
-_É preciso realizar todas as validações necessárias para evitar erros no banco de dados_
+The API needs to connect to a `postgreSQL` database called `library` and all table creation code must be placed in the `dump.sql` file
 
-A API precisa se conectar com um banco de dados `postgreSQL` chamado `biblioteca` e todo código de criação das tabelas deverá se colocado no arquivo `dump.sql`
+1 - Implement a table called `authors` containing the following characteristics:
 
-1 - Implemente uma tabela chamada `autores` contendo as seguintes características:
+- A unique author identifier as a primary key and auto increment;
+- The name (mandatory)
+- The age
 
-- Um identificador único do autor como chave primaria e auto incremento;
-- O nome (obrigatório)
-- A idade
+2 - Implement in the API the functionality of registering an author in the database following the specifications below::
 
-2 - Implemente na API a funcionalidade de cadastrar um autor no banco de dados seguindo as especificações abaixo:
+`POST /author`
 
-`POST /autor`
-
-Exemplo de entrada
+Input example
 
 ```
 {
-    "nome": "Guido Cerqueira",
-    "idade": 32
+    "name": "Guido Cerqueira",
+    "age": 32
 }
 ```
 
-Exemplo de saída
+Output example
 
 ```
 {
     "id": 1
-    "nome": "Guido Cerqueira",
-    "idade": 32
+    "name": "Guido Cerqueira",
+    "age": 32
 }
 ```
 
-ou
+or
 
 ```
 {
-    "mensagem": "o campo nome é obrigatório."
+    "message": "The name field is required."
 }
 ```
 
-3 - Implemente a funcionalidade de buscar um autor no banco de dados através do seu identificador único, seguindo as especificações abaixo:
+3 - Implement the functionality to search for an author in the database through its unique identifier, following the specifications below:
 
-`GET /autor/:id`
+`GET /author/:id`
 
-Exemplo de saída
+Output example
 
 ```
 {
     "id": 1
-    "nome": "Guido Cerqueira",
-    "idade": 32
+    "name": "Guido Cerqueira",
+    "age": 32
 }
 ```
 
-ou
+or
 
 ```
 {
-    "mensagem": "Autor não encontrado"
+    "message": "Author not found"
 }
 ```
 
-4 - Implemente uma tabela chamada `livros` contendo as seguintes características:
+4 - Implement a table called `books` containing the following characteristics:
 
-- Um identificador único do livro como chave primaria e auto incremento;
-- O nome (obrigatório)
-- O genero
-- A editora
-- A data de publicação no formato `YYYY-MM-DD`
-- O identificador do autor responsável pelo livro
+- A unique book identifier as a primary and auto-incrementing key;
+- The name (obrigatório)
+- The gender
+- The publisher
+- The publication date in the format `YYYY-MM-DD`
+- The identifier of the author responsible for the book
 
-5 - Implemente a funcionalidade de cadastrar um livro para um autor no banco de dados seguindo as especificações abaixo:
+5 - Implement the functionality of registering a book for an author in the database following the specifications below:
 
-`POST /autor/:id/livro`
+`POST /author/:id/book`
 
-Exemplo de entrada
+Input example
 
 ```
 {
-	"nome": "Backend PHP",
-	"genero": "Programação",
-	"editora": "Cubos Academy",
-	"data_publicacao": "2020-10-18"
+	"name": "Backend PHP",
+	"gender": "Programação",
+	"publisher": "Cubos Academy",
+	"publication_date": "2020-10-18"
 }
 ```
 
-Exemplo de saída
+Output example
 
 ```
 {
 	"id": 2,
-	"nome": "Backend PHP",
-	"genero": "Programação",
-	"editora": "Cubos Academy",
-	"data_publicacao": "2020-10-18"
+	"name": "Backend PHP",
+	"gender": "Developer",
+	"publisher": "Cubos Academy",
+	"publication_date": "2020-10-18"
 }
 ```
 
-ou
+or
 
 ```
 {
-    "mensagem": "o campo nome é obrigatório."
+    "message": "The name field is required."
 }
 ```
 
-6 - O endpoint de buscar um autor deverá ser alterado para quando detalhar o autor, trazer a lista de seus livros cadastrados.
+6 - The endpoint for searching for an author must be changed so that when detailing the author, bring up the list of registered books.
 
-Exemplo de saída
+Output example
 
 ```
 {
     "id": 1,
-    "nome": "Guido Cerqueira",
-    "idade": 32,
-    "livros": [
+    "name": "Guido Cerqueira",
+    "age": 32,
+    "books": [
         {
             "id": 1,
-            "nome": "Backend Nodejs",
-            "genero": "Programação",
-            "editora": "Cubos Academy",
-            "data_publicacao": "2018-06-10"
+            "name": "Backend Nodejs",
+            "gender": "Developer",
+            "publisher": "Cubos Academy",
+            "publication_date": "2018-06-10"
         },
         {
             "id": 2,
-            "nome": "Backend PHP",
-            "genero": "Programação",
-            "editora": "Cubos Academy",
-            "data_publicacao": "2020-10-18"
+            "name": "Backend PHP",
+            "gender": "Developer",
+            "publisher": "Cubos Academy",
+            "publication_date": "2020-10-18"
         }
     ]
 }
 ```
 
-ou
+or
 
 ```
 {
-    "mensagem": "livro não encontrado"
+    "message": "book not found"
 }
 ```
 
-Obs.: Deverá implementar esta funcionalidade utilizando a cláusula `JOIN`.
+Obs.: You should implement this functionality using the `JOIN` clause.
 
-7 - Implemente a funcionalidade de listar os livros cadastrados no banco de dados, com as informações do seu autor, seguindo as especificações abaixo:
+7 - Implement the functionality to list the books registered in the database, with their author information, following the specifications below:
 
-`GET /livro`
+`GET /book`
 
-Exemplo de saída
+Output example
 
 ```
 [
     {
         "id": 1,
-        "nome": "Backend Nodejs",
-        "genero": "Programação",
-        "editora": "Cubos Academy",
-        "data_publicacao": "2018-06-10",
-        "autor": {
+        "name": "Backend Nodejs",
+        "gender": "Developer",
+        "publisher": "Cubos Academy",
+        "publication_date": "2018-06-10",
+        "author": {
             "id": 1
-            "nome": "Guido Cerqueira",
-            "idade": 32
+            "name": "Guido Cerqueira",
+            "age": 32
         }
     },
     {
         "id": 2,
-        "nome": "Backend PHP",
-        "genero": "Programação",
-        "editora": "Cubos Academy",
-        "data_publicacao": "2020-10-18",
-        "autor": {
+        "name": "Backend PHP",
+        "gender": "Developer",
+        "publisher": "Cubos Academy",
+        "publication_date": "2020-10-18",
+        "author": {
             "id": 1
-            "nome": "Guido Cerqueira",
-            "idade": 32
+            "name": "Guido Cerqueira",
+            "age": 32
         }
     }
 ]
 ```
 
-ou
+or
 
 ```
 []
 ```
 
-Obs.: Deverá implementar esta funcionalidade utilizando a cláusula `JOIN`.
+Obs.: You should implement this functionality using the `JOIN` clause.
 
-E finalmente o job será entregue e mais uma missão será cumprida. Parabéns!!!
+And finally the job will be delivered and another mission will be accomplished. Congratulations!!!
 
 ---
 
-Preencha a checklist para finalizar o exercício:
 
-- [ ] Resolver o exercício revendo a aula se necessário
-- [ ] Adicionar as mudanças aos commits (`git add .` para adicionar todos os arquivos ou `git add nome_do_arquivo` para adicionar um arquivo específico)
-- [ ] Commitar a cada mudança significativa ou na finalização do exercício (`git commit -m "Mensagem do commit"`)
-- [ ] Pushar os commits no seu fork na origem (`git push origin nome-da-branch`)
 
-###### tags: `exercícios` `lógica` `banco de dados` `sql` `postgres`
+###### tags: `challenge` `nodejs` `database` `sql` `postgres`
