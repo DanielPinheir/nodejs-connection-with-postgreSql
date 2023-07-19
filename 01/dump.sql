@@ -21,3 +21,11 @@ CREATE TABLE books (
   publication_date DATE,
   author_id INTEGER REFERENCES authors(id)
 );
+
+--JOIN
+SELECT b.id as id_book, b.name as book_name, b.gender,
+b.publisher, b.publication_date, a.id as id_author,
+a.name as author_name, a.age as author_age
+FROM books b
+JOIN authors a
+ON b.author_id = a.id;
