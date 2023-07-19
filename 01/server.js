@@ -55,7 +55,42 @@ app.get("/author/:id", async (req, res) => {
   }
 });
 
-app.get("/book", (req, res) => {});
+app.get("/book", async (req, res) => {
+  try {
+    const booksAndAuthorJoin = `
+    SELECT b.id as id_book, b.name as book_name, b.gender,
+    b.publisher, b.publication_date, a.id as id_author,
+    a.name as author_name, a.age as author_age
+    FROM books b
+    JOIN authors a
+    ON b.author_id = a.id; 
+    `;
+
+    const booksAndAuthorDatabase = (await pool.query(booksAndAuthorJoin)).rows;
+
+    const booksAndAuthor = booksAndAuthorDatabase.map((book) => {
+      if (book.id_book) {
+        const bookRecord = {
+          id: book.id_book,
+          name: book.book_name,
+          gender: book.gender,
+          publisher: book.publisher,
+          publication_date: book.publication_date,
+          author: {
+            id: book.id_author,
+            name: book.author_name,
+            age: book.author_age,
+          },
+        };
+        return bookRecord;
+      }
+    });
+
+    return res.json(booksAndAuthor);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
 
 //POST
 app.post("/author", async (req, res) => {
@@ -85,7 +120,7 @@ app.post("/author", async (req, res) => {
 
     return res.json(authors.rows);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   }
 });
 
@@ -118,7 +153,7 @@ app.post("/author/:id/book", async (req, res) => {
 
     return res.json(book);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
   }
 });
 
